@@ -1,10 +1,21 @@
 // leitor de qr code
-const qrcode = require('qrcode-terminal');
+const qrcode = require('qrcode');
 const { Client, Buttons, List, MessageMedia } = require('whatsapp-web.js'); // Mudança Buttons
 const client = new Client();
 // serviço de leitura do qr code
 client.on('qr', qr => {
-    qrcode.generate(qr, {small: true});
+    // Gera o QR Code em formato Data URL (string que representa a imagem PNG)
+    qrcode.toDataURL(qr, (err, url) => {
+        if (err) {
+            console.error('Erro ao gerar QR Code como URL:', err);
+            return;
+        }
+
+        // Imprime a URL Base64 no log. Esta URL é o QR Code!
+        console.log('--- COPIE E COLE ESTA URL NO SEU NAVEGADOR PARA VER O QR CODE ---');
+        console.log(url); 
+        console.log('-----------------------------------------------------------------');
+    });
 });
 // apos isso ele diz que foi tudo certo
 client.on('ready', () => {
